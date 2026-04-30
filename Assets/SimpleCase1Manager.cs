@@ -5,6 +5,9 @@ using Unity.VisualScripting;
 
 public class SimpleCase1Manager : MonoBehaviour
 {
+    [Header("Case Data")]
+    public TravelerCaseData[] cases;
+
     [Header("Top Bar")]
     public TextMeshProUGUI caseText;
     public TextMeshProUGUI scoreText;
@@ -32,9 +35,6 @@ public class SimpleCase1Manager : MonoBehaviour
     public GameObject feedbackPanel;
     public TextMeshProUGUI feedbackText;
 
-    [Header("Visual Scripting")]
-    public GameObject vsFeedbackController;
-
     [Header("Tutorial")]
     public GameObject tutorialPanel;
 
@@ -49,18 +49,26 @@ public class SimpleCase1Manager : MonoBehaviour
     private bool inspected = false;
     private bool decided = false;
     private bool gameStarted = false;
-    private string correctDecision = "Approve";
+
+    private int currentCaseIndex = 0;
+    private TravelerCaseData currentCase;
 
     void Start()
     {
-        SetupCase1();
-        ShowTutorial();
+        if (cases == null || cases.Length == 0)
+        {
+            Debug.LogError("No TravelerCaseData assets assigned to the cases array.");
+            return;
+        }
+
+        LoadCase(0, true);
     }
 
     void Update()
     {
         if (!gameStarted) return;
         if (decided) return;
+        if (currentCase == null) return;
 
         timeRemaining -= Time.deltaTime;
         if (timeRemaining < 0f) timeRemaining = 0f;
@@ -73,48 +81,54 @@ public class SimpleCase1Manager : MonoBehaviour
         }
     }
 
-    void SetupCase1()
+    void LoadCase(int index, bool showTutorial)
     {
+        currentCaseIndex = index;
+        currentCase = cases[currentCaseIndex];
+
         inspected = false;
         decided = false;
-        gameStarted = false;
-        timeRemaining = 60f;
-        correctDecision = "Approve";
+        gameStarted = !showTutorial;
+        timeRemaining = currentCase.timeLimit;
 
-        caseText.text = "Case 1";
+        caseText.text = "Case " + currentCase.caseNumber;
         scoreText.text = "Score: " + score;
         UpdateTimeText();
 
-        travelerNameText.text = "Name: Alex Petrov";
-        travelerStatusText.text = "Status: Waiting";
-        travelerHintText.text = "Check the passport, declaration, and luggage.";
+        travelerNameText.text = "Name: " + currentCase.travelerName;
+        travelerStatusText.text = "Status: " + currentCase.travelerStatusAtStart;
+        travelerHintText.text = currentCase.travelerHint;
 
-        passportNameText.text = "Name: Alex Petrov";
-        passportCountryText.text = "Country: Arstotzka";
-        passportIdText.text = "ID: P-001";
+        passportNameText.text = "Name: " + currentCase.travelerName;
+        passportCountryText.text = "Country: " + currentCase.passportCountry;
+        passportIdText.text = "ID: " + currentCase.passportId;
 
-        declarationItemsText.text = "Declared Items:\n- Clothes\n- Snacks";
+        declarationItemsText.text = "Declared Items:\n" + currentCase.declaredItems;
         luggageHintText.text = "Press Inspect to check the luggage.";
 
-        bagSlot1.SetActive(false);
-        bagSlot2.SetActive(false);
-        bagSlot3.SetActive(false);
-        bagSlot4.SetActive(false);
+        HideAllBagSlots();
 
         feedbackPanel.SetActive(true);
-        feedbackText.text = "Read the tutorial, then press Start.";
-    }
 
-    void ShowTutorial()
-    {
-        tutorialPanel.SetActive(true);
+        if (showTutorial)
+        {
+            tutorialPanel.SetActive(true);
+            feedbackText.text = "Read the tutorial, then press Start.";
+            SetDecisionButtons(false);
+        }
+        else
+        {
+            tutorialPanel.SetActive(false);
+            feedbackText.text = currentCase.startFeedback;
+            SetDecisionButtons(true);
+        }
 
-        SetDecisionButtons(false);
         SetActiveIfAssigned(nextButton, false);
     }
 
     public void StartGame()
     {
+        if (currentCase == null) return;
         if (decided) return;
 
         gameStarted = true;
@@ -124,29 +138,26 @@ public class SimpleCase1Manager : MonoBehaviour
         SetActiveIfAssigned(nextButton, false);
 
         feedbackPanel.SetActive(true);
-        feedbackText.text = "Check the documents. You can approve or reject now, or inspect the luggage if needed.";
+        feedbackText.text = currentCase.startFeedback;
     }
 
     public void InspectCase()
     {
         if (!gameStarted) return;
         if (decided) return;
+        if (currentCase == null) return;
 
         inspected = true;
 
-        // Inspection takes time, so the player should use it carefully.
-        timeRemaining -= 5f;
+        timeRemaining -= currentCase.inspectTimeCost;
         if (timeRemaining < 0f) timeRemaining = 0f;
         UpdateTimeText();
 
-        bagSlot1.SetActive(true);
-        bagSlot2.SetActive(true);
-        bagSlot3.SetActive(false);
-        bagSlot4.SetActive(false);
+        ShowBagSlots(currentCase.visibleBagSlots);
 
-        luggageHintText.text = "Found items: Clothes, Snacks";
+        luggageHintText.text = currentCase.foundItems;
         feedbackPanel.SetActive(true);
-        feedbackText.text = "Inspection complete. The luggage matches the declaration.";
+        feedbackText.text = currentCase.inspectionFeedback;
 
         if (timeRemaining <= 0f)
         {
@@ -168,36 +179,33 @@ public class SimpleCase1Manager : MonoBehaviour
     {
         if (!gameStarted) return;
         if (decided) return;
+        if (currentCase == null) return;
 
         decided = true;
 
-        bool correct = (playerDecision == correctDecision);
+        bool correct = playerDecision == currentCase.correctDecision;
 
         if (correct)
         {
-            score += 10;
+            score += currentCase.correctScore;
 
             if (inspected)
             {
-                feedbackText.text = "Correct. The inspection confirmed that this traveler should be approved.";
+                feedbackText.text = currentCase.correctFeedbackAfterInspection;
             }
             else
             {
-                feedbackText.text = "Correct. The documents looked safe, so approving without inspection was efficient.";
+                feedbackText.text = currentCase.correctFeedbackWithoutInspection;
             }
         }
         else
         {
-            score -= 5;
-            feedbackText.text = "Wrong. This traveler was safe to approve.";
+            score -= currentCase.wrongPenalty;
+            feedbackText.text = currentCase.wrongFeedback;
         }
 
         travelerStatusText.text = "Status: " + playerDecision;
         scoreText.text = "Score: " + score;
-        if (vsFeedbackController != null)
-        {
-            CustomEvent.Trigger(vsFeedbackController, "DecisionMade");
-        }
 
         feedbackPanel.SetActive(true);
 
@@ -210,15 +218,34 @@ public class SimpleCase1Manager : MonoBehaviour
         decided = true;
 
         feedbackPanel.SetActive(true);
-        feedbackText.text = "Time up. Please restart the demo.";
+        feedbackText.text = "Time up. Please press Next.";
 
         SetDecisionButtons(false);
         SetActiveIfAssigned(nextButton, true);
     }
 
+    public void NextCase()
+    {
+        if (currentCaseIndex + 1 < cases.Length)
+        {
+            LoadCase(currentCaseIndex + 1, false);
+        }
+        else
+        {
+            gameStarted = false;
+            decided = true;
+
+            feedbackPanel.SetActive(true);
+            feedbackText.text = "All cases complete. Final score: " + score;
+
+            SetDecisionButtons(false);
+            SetActiveIfAssigned(nextButton, false);
+        }
+    }
+
     void UpdateTimeText()
     {
-        timeText.text = "Time:" + Mathf.CeilToInt(timeRemaining);
+        timeText.text = "Time: " + Mathf.CeilToInt(timeRemaining);
     }
 
     void SetDecisionButtons(bool visible)
@@ -228,16 +255,27 @@ public class SimpleCase1Manager : MonoBehaviour
         SetActiveIfAssigned(rejectButton, visible);
     }
 
+    void HideAllBagSlots()
+    {
+        SetActiveIfAssigned(bagSlot1, false);
+        SetActiveIfAssigned(bagSlot2, false);
+        SetActiveIfAssigned(bagSlot3, false);
+        SetActiveIfAssigned(bagSlot4, false);
+    }
+
+    void ShowBagSlots(int count)
+    {
+        SetActiveIfAssigned(bagSlot1, count >= 1);
+        SetActiveIfAssigned(bagSlot2, count >= 2);
+        SetActiveIfAssigned(bagSlot3, count >= 3);
+        SetActiveIfAssigned(bagSlot4, count >= 4);
+    }
+
     void SetActiveIfAssigned(GameObject target, bool active)
     {
         if (target != null)
         {
             target.SetActive(active);
         }
-    }
-
-    public void NextCase()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
