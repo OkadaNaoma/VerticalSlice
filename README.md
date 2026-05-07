@@ -12,7 +12,32 @@ The state machine starts in the `Waiting` state while the player is checking the
 
 
 ## Milestone 2 Devlog
-Milestone 2 Devlog goes here.
+1. For Milestone 2, I will improve the final shift summary. The game already shows a basic completed message and final score, but I want the ending to give the player more useful information. The improved summary will show the final score, completed cases, remaining time, and a short performance message.
+
+1) Add more information to the final summary.
+   1. Find the part of the game that currently shows the “Completed” message.
+   2. Add text for the number of completed cases, such as “Cases Completed: 3 / 3.”
+   3. Add text for the remaining time, such as “Time Left: 35s.”
+   4. Keep the existing final score text.
+   5. Run the game and test if the new text appears after the final traveler.
+
+2) Add a simple performance message.
+   1. Use the final score to decide what message to show.
+   2. If the score is high, show a positive message, such as “Good inspection!”
+   3. If the score is low, show a message like “Needs more careful inspection.”
+   4. Test the game with different results if possible.
+   5. Check if the message changes correctly based on the final score.
+
+3) Make the ending state clear to the player.
+   1. Make sure the Inspect, Approve, and Reject buttons are not useful after the final case.
+   2. Keep the Restart button visible.
+   3. Make sure the timer does not confuse the player after the game is completed.
+   4. Run the game from the beginning and complete all three cases.
+   5. Confirm that the final summary appears clearly at the end.
+
+2. 
+
+
 ## Milestone 3 Devlog
 Milestone 3 Devlog goes here.
 ## Milestone 4 Devlog
