@@ -12,30 +12,46 @@ The state machine starts in the `Waiting` state while the player is checking the
 
 
 ## Milestone 2 Devlog
-1. For Milestone 2, I will improve the final shift summary. The game already shows a basic completed message and final score, but I want the ending to give the player more useful information. The improved summary will show the final score, completed cases, remaining time, and a short performance message.
+### 1. Feature summary and task break-down
+For Milestone 2, I worked on adding multiple traveler cases instead of only one case. The player can now inspect three travelers, make decisions for each one, and see the final score after all cases are finished.
 
-1) Add more information to the final summary.
-   1. Find the part of the game that currently shows the “Completed” message.
-   2. Add text for the number of completed cases, such as “Cases Completed: 3 / 3.”
-   3. Add text for the remaining time, such as “Time Left: 35s.”
-   4. Keep the existing final score text.
-   5. Run the game and test if the new text appears after the final traveler.
+1. Create multiple case data
+   1. Make three traveler cases.
+   2. Give each case different passport, declaration, luggage, and correct decision data.
+   3. Test that each case can show different text and luggage items.
+   ![Milestone 2 gameplay screen](DevlogFiles/VerticalSlice_MS2_Gameplay3rd.png)
 
-2) Add a simple performance message.
-   1. Use the final score to decide what message to show.
-   2. If the score is high, show a positive message, such as “Good inspection!”
-   3. If the score is low, show a message like “Needs more careful inspection.”
-   4. Test the game with different results if possible.
-   5. Check if the message changes correctly based on the final score.
+2. Build case progression
+   1. Add a current case number.
+   2. Use the Next button to move to the next traveler.
+   3. Reset the screen state when the next case starts.
+   4. Hide buttons after the last case.
+   ![Final score after all cases](DevlogFiles/VerticalSlice_MS2_GameplayResult.png)
 
-3) Make the ending state clear to the player.
-   1. Make sure the Inspect, Approve, and Reject buttons are not useful after the final case.
-   2. Keep the Restart button visible.
-   3. Make sure the timer does not confuse the player after the game is completed.
-   4. Run the game from the beginning and complete all three cases.
-   5. Confirm that the final summary appears clearly at the end.
+3. Add scoring and ending
+   1. Give points for correct decisions.
+   2. Subtract time when the player uses Inspect.
+   3. Show the final score after all three travelers are judged.
+   4. Test the full gameplay from Case 1 to the final result.
 
-2. 
+I accomplished the main version of this feature. The game now has three playable traveler cases, case progression, inspection time cost, scoring, and a final score screen.
+
+### 2. Reflection on the W5 task break-down
+The W5 task break-down helped because it made the feature smaller and easier to test. Instead of trying to build the whole system at once, I worked on case data, case progression, and scoring separately.
+
+If I did this again, I would write clearer test steps for each part. For example, I would write exactly what should happen after pressing Next, Approve, Reject, and Inspect.
+
+### 3. Bridge between Visual Scripting and code
+My game uses both C# and Visual Scripting. The main gameplay logic is handled in `SimpleCase1Manager.cs`, which loads the case data, updates the UI, checks the player decision, changes the score, and moves to the next case.
+
+Visual Scripting is used for the feedback state system. When the player chooses Approve or Reject, the C# decision logic connects to the `VSFeedbackController` State Graph, which changes from the `Waiting` state to the `DecisionFeedback` state. This helps show that the game has moved from normal case checking into the result/feedback phase.
+![VSFeedbackController State Graph](DevlogFiles/VerticalSlice_MS2_StateMachine.png)
+
+### 4. Unity system used for Feature 3
+For Feature 3, please grade my ScriptableObject system. The case data is stored in `Assets/Data/Cases`, and each `TravelerCaseData` asset contains information such as traveler name, passport data, declared items, found luggage items, correct decision, score values, and feedback text.
+![Traveler case data using ScriptableObject](DevlogFiles/VerticalSlice_MS2_ScriptableObject.png)
+
+This system is useful because I can add or edit traveler cases without rewriting the main game code. It also makes the project easier to expand from three cases to five cases later.
 
 
 ## Milestone 3 Devlog
