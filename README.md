@@ -61,9 +61,7 @@ Milestone 4 Devlog goes here.
 ## Final Devlog
 Final Devlog goes here.
 ## Open-source assets
-- Modular Characters by Kenney  
-  License: Creative Commons CC0  
-  URL: https://kenney.nl/assets/modular-characters
-- Platformer Art Candy by Kenney  
-  License: Creative Commons CC0  
-  URL: https://kenney.nl/assets/platformer-art-candy
+- [Modular Characters](https://kenney.nl/assets/modular-characters) by Kenney  
+  License: Creative Commons CC0
+- [Platformer Art: Candy](https://kenney.nl/assets/platformer-art-candy) by Kenney  
+  License: Creative Commons CC0
