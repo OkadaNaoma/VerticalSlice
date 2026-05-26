@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+
 
 public class SimpleCase1Manager : MonoBehaviour
 {
@@ -33,7 +35,11 @@ public class SimpleCase1Manager : MonoBehaviour
 
     [Header("Feedback")]
     public GameObject feedbackPanel;
+    public Image feedbackPanelImage;
     public TextMeshProUGUI feedbackText;
+    public Material feedbackNormalMaterial;
+    public Material feedbackCorrectMaterial;
+    public Material feedbackWrongMaterial;
 
     [Header("Tutorial")]
     public GameObject tutorialPanel;
@@ -59,6 +65,11 @@ public class SimpleCase1Manager : MonoBehaviour
         {
             Debug.LogError("No TravelerCaseData assets assigned to the cases array.");
             return;
+        }
+
+        if (feedbackPanelImage == null && feedbackPanel != null)
+        {
+            feedbackPanelImage = feedbackPanel.GetComponent<Image>();
         }
 
         LoadCase(0, true);
@@ -109,6 +120,7 @@ public class SimpleCase1Manager : MonoBehaviour
         HideAllBagSlots();
 
         feedbackPanel.SetActive(true);
+        SetFeedbackMaterial(feedbackNormalMaterial);
 
         if (showTutorial)
         {
@@ -138,6 +150,7 @@ public class SimpleCase1Manager : MonoBehaviour
         SetActiveIfAssigned(nextButton, false);
 
         feedbackPanel.SetActive(true);
+        SetFeedbackMaterial(feedbackNormalMaterial);
         feedbackText.text = currentCase.startFeedback;
     }
 
@@ -157,6 +170,7 @@ public class SimpleCase1Manager : MonoBehaviour
 
         luggageHintText.text = currentCase.foundItems;
         feedbackPanel.SetActive(true);
+        SetFeedbackMaterial(feedbackNormalMaterial);
         feedbackText.text = currentCase.inspectionFeedback;
 
         if (timeRemaining <= 0f)
@@ -188,6 +202,7 @@ public class SimpleCase1Manager : MonoBehaviour
         if (correct)
         {
             score += currentCase.correctScore;
+            SetFeedbackMaterial(feedbackCorrectMaterial);
 
             if (inspected)
             {
@@ -201,6 +216,7 @@ public class SimpleCase1Manager : MonoBehaviour
         else
         {
             score -= currentCase.wrongPenalty;
+            SetFeedbackMaterial(feedbackWrongMaterial);
             feedbackText.text = currentCase.wrongFeedback;
         }
 
@@ -218,6 +234,7 @@ public class SimpleCase1Manager : MonoBehaviour
         decided = true;
 
         feedbackPanel.SetActive(true);
+        SetFeedbackMaterial(feedbackNormalMaterial);
         feedbackText.text = "Time up. Please press Next.";
 
         SetDecisionButtons(false);
@@ -236,6 +253,7 @@ public class SimpleCase1Manager : MonoBehaviour
             decided = true;
 
             feedbackPanel.SetActive(true);
+            SetFeedbackMaterial(feedbackNormalMaterial);
             feedbackText.text = "All cases complete. Final score: " + score;
 
             SetDecisionButtons(false);
@@ -269,6 +287,14 @@ public class SimpleCase1Manager : MonoBehaviour
         SetActiveIfAssigned(bagSlot2, count >= 2);
         SetActiveIfAssigned(bagSlot3, count >= 3);
         SetActiveIfAssigned(bagSlot4, count >= 4);
+    }
+
+    void SetFeedbackMaterial(Material material)
+    {
+        if (feedbackPanelImage != null && material != null)
+        {
+            feedbackPanelImage.material = material;
+        }
     }
 
     void SetActiveIfAssigned(GameObject target, bool active)
