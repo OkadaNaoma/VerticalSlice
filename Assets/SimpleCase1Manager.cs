@@ -37,6 +37,7 @@ public class SimpleCase1Manager : MonoBehaviour
     public GameObject feedbackPanel;
     public Image feedbackPanelImage;
     public TextMeshProUGUI feedbackText;
+    public SpriteRenderer feedbackShaderEffect;
     public Material feedbackNormalMaterial;
     public Material feedbackCorrectMaterial;
     public Material feedbackWrongMaterial;
@@ -291,9 +292,10 @@ public class SimpleCase1Manager : MonoBehaviour
 
     void SetFeedbackMaterial(Material material)
     {
-        if (feedbackPanelImage != null && material != null)
+        if (feedbackShaderEffect != null && material != null)
         {
-            feedbackPanelImage.material = material;
+            feedbackShaderEffect.gameObject.SetActive(true);
+            feedbackShaderEffect.material = material;
         }
     }
 
