@@ -292,7 +292,16 @@ public class SimpleCase1Manager : MonoBehaviour
 
     void SetFeedbackMaterial(Material material)
     {
-        if (feedbackShaderEffect != null && material != null)
+        if (material == null) return;
+
+        if (feedbackPanelImage != null)
+        {
+            feedbackPanelImage.gameObject.SetActive(true);
+            feedbackPanelImage.material = material;
+            feedbackPanelImage.color = Color.white;
+        }
+
+        if (feedbackShaderEffect != null)
         {
             feedbackShaderEffect.gameObject.SetActive(true);
             feedbackShaderEffect.material = material;
