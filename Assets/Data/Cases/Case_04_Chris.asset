@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6876d5edf8e244b0b810d2616fa92d49, type: 3}
+  m_Name: Case_04_Chris
+  m_EditorClassIdentifier: 
+  caseNumber: 4
+  travelerName: Chris Walker
+  travelerStatusAtStart: Waiting
+  travelerHint: The traveler looks nervous and avoids eye contact.
+  passportCountry: Republia
+  passportId: P-004
+  declaredItems: '- Clothes
+
+    - Snacks'
+  foundItems: 'Found items: Clothes, Snacks, Knife'
+  visibleBagSlots: 3
+  correctDecision: Reject
+  correctScore: 10
+  wrongPenalty: 10
+  timeLimit: 60
+  inspectTimeCost: 5
+  startFeedback: Check the documents. You can approve or reject now, or inspect the
+    luggage if needed.
+  inspectionFeedback: Inspection complete. A knife was found in the luggage.
+  correctFeedbackWithoutInspection: Correct, but you should have inspected the luggage
+    first. The traveler was suspicious.
+  correctFeedbackAfterInspection: Correct. The inspection found an undeclared knife,
+    so rejecting the traveler was the right decision.
+  wrongFeedback: Wrong. The luggage contained a knife, so this traveler should have
+    been rejected.

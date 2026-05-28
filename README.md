@@ -65,3 +65,5 @@ Final Devlog goes here.
   License: Creative Commons CC0
 - [Platformer Art: Candy](https://kenney.nl/assets/platformer-art-candy) by Kenney  
   License: Creative Commons CC0
+- [Generic Items](https://kenney.nl/assets/generic-items) by Kenney
+  License: Creative Commons CC0
