@@ -1,9 +1,9 @@
 # GDIM33 Vertical Slice
 ## Milestone 1 Devlog
-## Visual Scripting Graph Explanation
+### Visual Scripting Graph Explanation
 For this build, I used a Visual Scripting State Machine called `VSFeedbackStateMachine`. This graph has two states: `Waiting` and `DecisionFeedback`. The game starts in the `Waiting` state while the player is checking the traveler’s documents and luggage. When the player clicks Approve or Reject, my C# script sends a custom event called `DecisionMade` to the Visual Scripting graph. This event triggers the transition from `Waiting` to `DecisionFeedback`. I also added a Debug Log in the `DecisionFeedback` state to confirm that the state machine is working. The main gameplay is controlled by C#, but this graph handles the state change after the player makes a decision.
 
-## Updated Break-down
+### Updated Break-down
 ![Updated break-down](DevlogFiles/GDIM33_VerticalSlice_Break-down_Milestone1.png)
 
 I updated my break-down by adding the state machine system. In the previous version, the break-down mainly showed the documents, luggage, buttons, timer, score, and feedback UI. In the updated version, I added `VSFeedbackStateMachine` and connected it to the decision buttons and the feedback system. The Approve and Reject buttons call the main case manager script, and then the script sends the `DecisionMade` event to the state machine.
@@ -55,7 +55,18 @@ This system is useful because I can add or edit traveler cases without rewriting
 
 
 ## Milestone 3 Devlog
-Milestone 3 Devlog goes here.
+### 1.
+I used Shader Graph for the feedback message panel. The shader can be found in the game after the player makes an Approve or Reject decision. If the decision is correct, the feedback panel becomes green. If the decision is wrong, the feedback panel becomes red.
+Technically, the shader uses exposed properties such as BaseColor, BaseAlpha, PulseStrength, and PulseSpeed. It uses nodes like Time, Sine, Multiply, and Add to make a simple pulsing color/alpha effect. The final color is sent to the fragment output, so the panel color changes visually during gameplay. I use different materials for normal, correct, and wrong feedback, so the same feedback panel can show different visual states.
+![Screenshot of Shader Graph](DevlogFiles/VerticalSlice_MS3_ShaderGraph.png)
+
+### 2.
+Based on playtesting, I found that players sometimes pressed buttons before fully understanding the rules. Also, after the game started, the tutorial disappeared, so players could not check the rules again. To improve this, I added a tutorial toggle. The tutorial still appears at the beginning, but now the player can press H at any time to show or hide it. This makes the rules easier to check during gameplay without restarting the game.
+
+### 3.
+Since the last milestone, I added a fourth case to extend the main gameplay loop. The player now checks four travelers instead of three before reaching the final result screen. I also added a new luggage item, a knife, as hidden contraband in Case 4. This gives the player another reason to use the Inspect button and makes the decision loop more complete: read the documents, decide whether to inspect, check the luggage, then approve or reject the traveler.
+
+
 ## Milestone 4 Devlog
 Milestone 4 Devlog goes here.
 ## Final Devlog

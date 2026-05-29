@@ -78,9 +78,19 @@ public class SimpleCase1Manager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            ToggleTutorial();
+        }
+
         if (!gameStarted) return;
         if (decided) return;
         if (currentCase == null) return;
+
+        if (tutorialPanel != null && tutorialPanel.activeSelf)
+        {
+            return;
+        }
 
         timeRemaining -= Time.deltaTime;
         if (timeRemaining < 0f) timeRemaining = 0f;
@@ -126,7 +136,7 @@ public class SimpleCase1Manager : MonoBehaviour
         if (showTutorial)
         {
             tutorialPanel.SetActive(true);
-            feedbackText.text = "Read the tutorial, then press Start.";
+            feedbackText.text = "Read the tutorial, then press H to start.";
             SetDecisionButtons(false);
         }
         else
@@ -153,6 +163,19 @@ public class SimpleCase1Manager : MonoBehaviour
         feedbackPanel.SetActive(true);
         SetFeedbackMaterial(feedbackNormalMaterial);
         feedbackText.text = currentCase.startFeedback;
+    }
+
+    public void ToggleTutorial()
+    {
+        if (tutorialPanel == null) return;
+
+        bool willShow = !tutorialPanel.activeSelf;
+        tutorialPanel.SetActive(willShow);
+
+        if (!gameStarted && !willShow)
+        {
+            StartGame();
+        }
     }
 
     public void InspectCase()
