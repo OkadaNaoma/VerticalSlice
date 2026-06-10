@@ -78,7 +78,11 @@ My rendering effect is used on the feedback message panel after the player makes
 ![Correct feedback panel screenshot](DevlogFiles/VerticalSlice_Final_GreenEffect.png)
 
 ### 3.
-I broke the project into smaller systems instead of trying to build the whole game at once. I made separate systems for traveler case data, document and luggage display, decision checking, timer and score, tutorial toggle, feedback, shader materials, and audio. This helped me understand the scope of the project because each part had a smaller goal. For example, I first made one playable case, then expanded it to more cases after the basic loop worked. This process worked well for my Vertical Slice because I could test each system step by step and fix problems before adding new features.
+For a large project, I think it is important to break it down into smaller systems first. In this project, I separated the game into systems such as traveler case data, document and luggage display, decision checking, timer and score, tutorial toggle, feedback, shader materials, and audio. I plan to keep using task step break-downs in future projects because they help me decide what to implement first and what can wait. Bubble diagrams are also useful at the early planning stage, but task step break-downs were more useful for me when I was actually building the game in Unity.
+
+Breaking a large project into small steps helped me understand the real scope of the project. At first, the game idea sounded simple, but each feature had many smaller tasks, such as making the UI, connecting buttons, storing case data, showing feedback, and testing the game loop. By separating these tasks, I could see which parts were required for the core gameplay and which parts were extra polish.
+
+This process relates directly to how I created my Vertical Slice. I first focused on making one playable case, then expanded it into multiple cases after the basic loop worked. Later, I added the inspect time cost, tutorial toggle, feedback shader, and audio. This step-by-step process worked well for me, so I would repeat it in future projects instead of trying to build all features at the same time.
 
 
 ## Open-source assets
