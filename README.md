@@ -67,10 +67,20 @@ Based on playtesting, I found that players sometimes pressed buttons before full
 Since the last milestone, I added a fourth case to extend the main gameplay loop. The player now checks four travelers instead of three before reaching the final result screen. I also added a new luggage item, a knife, as hidden contraband in Case 4. This gives the player another reason to use the Inspect button and makes the decision loop more complete: read the documents, decide whether to inspect, check the luggage, then approve or reject the traveler.
 
 
-## Milestone 4 Devlog
-Milestone 4 Devlog goes here.
 ## Final Devlog
-Final Devlog goes here.
+### 1.
+My game is a Papers, Please-like customs inspection game. The core loop is: read the traveler’s passport and declaration form, decide whether to inspect the luggage, then approve or reject the traveler. Inspecting the luggage gives more information, but it costs 5 seconds, so the player has to balance speed and accuracy. This final version has 5 traveler cases and a final score screen, so it shows the main gameplay loop I planned for my Vertical Slice.
+![Case 4 inspection gameplay screenshot](DevlogFiles/VerticalSlice_Final_Case4.png)
+
+### 2.
+My rendering effect is used on the feedback message panel after the player makes a decision. The Shader Graph is `SG_FeedbackPanelPulse`. It uses exposed properties like `BaseColor`, `BaseAlpha`, `PulseStrength`, and `PulseSpeed`. The graph uses nodes such as `Time`, `Multiply`, `Sine`, `Add`, and `Saturate` to create a pulsing alpha effect. In `SimpleCase1Manager.cs`, the game checks if the player’s decision is correct or wrong. If it is correct, the script applies the green feedback material. If it is wrong, it applies the red feedback material. This makes the rendering effect respond to gameplay logic.
+![Shader Graph screenshot](DevlogFiles/VerticalSlice_Final_ShaderGraph.png)
+![Correct feedback panel screenshot](DevlogFiles/VerticalSlice_Final_GreenEffect.png)
+
+### 3.
+I broke the project into smaller systems instead of trying to build the whole game at once. I made separate systems for traveler case data, document and luggage display, decision checking, timer and score, tutorial toggle, feedback, shader materials, and audio. This helped me understand the scope of the project because each part had a smaller goal. For example, I first made one playable case, then expanded it to more cases after the basic loop worked. This process worked well for my Vertical Slice because I could test each system step by step and fix problems before adding new features.
+
+
 ## Open-source assets
 - [Modular Characters](https://kenney.nl/assets/modular-characters) by Kenney  
   License: Creative Commons CC0
@@ -78,3 +88,14 @@ Final Devlog goes here.
   License: Creative Commons CC0
 - [Generic Items](https://kenney.nl/assets/generic-items) by Kenney
   License: Creative Commons CC0
+## Audio assets
+- [サイバー29](https://maou.audio/bgm_cyber29/) by 魔王魂
+   License: Creative Commons CC4
+- [データ解析](https://soundeffect-lab.info/sound/anime/) by 効果音ラボ
+   License: Free to use, credit optional
+- [ロボットが腕を動かす1](https://soundeffect-lab.info/sound/machine/) by 効果音ラボ
+   License: Free to use, credit optional
+- [クイズ正解3](https://soundeffect-lab.info/sound/anime/) by 効果音ラボ
+   License: Free to use, credit optional
+- [クイズ不正解1](https://soundeffect-lab.info/sound/anime/) by 効果音ラボ
+   License: Free to use, credit optional

@@ -51,6 +51,13 @@ public class SimpleCase1Manager : MonoBehaviour
     public GameObject rejectButton;
     public GameObject nextButton;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip inspectSound1;
+    [SerializeField] private AudioClip inspectSound2;
+    [SerializeField] private AudioClip correctSound;
+    [SerializeField] private AudioClip wrongSound;
+
     private int score = 0;
     private float timeRemaining = 60f;
     private bool inspected = false;
@@ -165,6 +172,14 @@ public class SimpleCase1Manager : MonoBehaviour
         feedbackText.text = currentCase.startFeedback;
     }
 
+    private void PlaySfx(AudioClip clip, float volume = 1f)
+    {
+        if (sfxSource == null) return;
+        if (clip == null) return;
+
+        sfxSource.PlayOneShot(clip, volume);
+    }
+
     public void ToggleTutorial()
     {
         if (tutorialPanel == null) return;
@@ -183,8 +198,12 @@ public class SimpleCase1Manager : MonoBehaviour
         if (!gameStarted) return;
         if (decided) return;
         if (currentCase == null) return;
+        if (inspected) return;
 
         inspected = true;
+
+        PlaySfx(inspectSound1, 0.55f);
+        PlaySfx(inspectSound2, 0.45f);
 
         timeRemaining -= currentCase.inspectTimeCost;
         if (timeRemaining < 0f) timeRemaining = 0f;
@@ -225,6 +244,8 @@ public class SimpleCase1Manager : MonoBehaviour
 
         if (correct)
         {
+            PlaySfx(correctSound, 0.7f);
+
             score += currentCase.correctScore;
             SetFeedbackMaterial(feedbackCorrectMaterial);
 
@@ -239,6 +260,8 @@ public class SimpleCase1Manager : MonoBehaviour
         }
         else
         {
+            PlaySfx(wrongSound, 0.7f);
+            
             score -= currentCase.wrongPenalty;
             SetFeedbackMaterial(feedbackWrongMaterial);
             feedbackText.text = currentCase.wrongFeedback;
